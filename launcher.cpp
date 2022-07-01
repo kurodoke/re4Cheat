@@ -66,10 +66,10 @@ int main() {
 	ReadProcessMemory(handleProcess, (LPCVOID)(BASE + pSt.PROFILE_PSTATIC), &BaseAdrProfile, sizeof(uintptr_t), NULL) ? std::cout << "\nSuccess get Profile Pointer static\n" : std::cout << "rpm error get code : " << GetLastError();
 
 	int choice = 5;
-	bool healthToggle = false, ammoToggle = false;
+	bool healthToggle = false, ammoToggle = false, throwToggle = false;
 
 	do {
-		std::cout << std::endl << "select one option ? : \n1.unlimited health\n2.unlimited ammo\n10.exit\n choose: ";
+		std::cout << std::endl << "select one option ? : \n1.unlimited health\n2.unlimited ammo\n3.unlimited throwable\n10.exit\n choose: ";
 		std::cin >> choice;
 
 		std::cout << std::endl;
@@ -91,6 +91,17 @@ int main() {
 			if (ammoToggle){
 				std::thread ammo(unlimitedAmmo, handleProcess, BASE, pSt, &ammoToggle);
 				ammo.detach();
+				std::cout << std::endl << "activated";
+			}
+			else {
+				std::cout << std::endl << "deactived";
+			}
+		}
+		if (choice == 3) {
+			throwToggle = !throwToggle;
+			if (throwToggle) {
+				std::thread throwable(unlimitedThrowable, handleProcess, BASE, pSt, &throwToggle);
+				throwable.detach();
 				std::cout << std::endl << "activated";
 			}
 			else {
